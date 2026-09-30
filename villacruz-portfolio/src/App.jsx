@@ -8,9 +8,9 @@ function App() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('https://api.github.com/users/' + user + '/repos?sort=updated&per_page=6')
+    fetch('https://api.github.com/users/' + user + '/repos?sort=updated&per_page=100')
       .then((response) => response.json())
-      .then((items) => setRepos(items.filter((repo) => !repo.fork).slice(0, 6)))
+      .then((items) => setRepos(items.filter((repo) => !repo.fork && repo.name.toLowerCase() !== 'villacruz-portfolio').slice(0, 6)))
       .catch(() => setRepos([]))
       .finally(() => setLoading(false))
   }, [])
