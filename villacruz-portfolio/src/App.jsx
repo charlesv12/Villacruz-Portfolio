@@ -1,121 +1,28 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
 
+const user = 'charlesv12'
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [repos, setRepos] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('https://api.github.com/users/' + user + '/repos?sort=updated&per_page=6')
+      .then((response) => response.json())
+      .then((items) => setRepos(items.filter((repo) => !repo.fork).slice(0, 6)))
+      .catch(() => setRepos([]))
+      .finally(() => setLoading(false))
+  }, [])
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+    <main>
+      <nav className="nav wrap"><a className="brand" href="#top">CV<span>.</span></a><div><a href="#about">About</a><a href="#work">Work</a><a href="#contact">Contact ?</a></div></nav>
+      <header className="hero wrap" id="top"><p className="eyebrow">ACADEMIC DEVELOPER <b>/</b> 20 YEARS OLD</p><h1>Charles<br /><span>Villacruz</span><i>.</i></h1><p className="intro">A student who enjoys turning ideas into useful, thoughtful software.</p><a className="line-link" href="#work">EXPLORE MY WORK ?</a><div className="hero-art" aria-hidden="true"><div className="orbit" /><div className="core">CV<span>?</span></div></div><small className="index">PORTFOLIO / 2026</small></header>
+      <section className="about wrap section" id="about"><div className="label">01 / ABOUT ME</div><div className="columns"><h2>Curious by nature.<br />Developer <em>by practice.</em></h2><p>I am Charles, a 20-year-old academic developer building my skills through study and hands-on projects. I enjoy making clear, useful experiences and learning how each part of a product fits together.<br /><br />Every project is a chance to ask better questions, try something new, and build something for people.</p></div></section>
+      <section className="work section" id="work"><div className="wrap"><div className="label">02 / SELECTED WORK <small>PUBLIC GITHUB REPOSITORIES</small></div><div className="work-head"><h2>Things I have been<br /><em>building.</em></h2><p>Projects from my public GitHub.<br />Always learning, always iterating.</p></div>{loading ? <p className="notice">Loading repositories...</p> : repos.length ? <div className="projects">{repos.map((repo, index) => <a className="project" key={repo.id} href={repo.html_url} target="_blank" rel="noreferrer"><small>0{index + 1} / PROJECT <b>?</b></small><h3>{repo.name.replaceAll('-', ' ')}</h3><p>{repo.description || 'A project in progress. Explore the source on GitHub.'}</p><small className="meta">{repo.language || 'OPEN SOURCE'} <span>? {repo.stargazers_count}</span></small></a>)}</div> : <p className="notice">Could not load repositories. <a href="https://github.com/charlesv12?tab=repositories">Browse on GitHub ?</a></p>}<a className="line-link all" href="https://github.com/charlesv12?tab=repositories" target="_blank" rel="noreferrer">VIEW ALL REPOSITORIES ?</a></div></section>
+      <footer className="wrap section" id="contact"><div className="label">03 / GET IN TOUCH</div><div className="contact"><h2>Have a good<br /><em>idea?</em></h2><a className="line-link" href="https://github.com/charlesv12" target="_blank" rel="noreferrer">FIND ME ON GITHUB ?</a></div><div className="footer"><a className="brand" href="#top">CV<span>.</span></a><span>Designed and built with curiosity.</span><a href="#top">BACK TO TOP ?</a></div></footer>
+    </main>
   )
 }
 
