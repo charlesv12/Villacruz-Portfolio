@@ -1,6 +1,5 @@
 ﻿{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "npm --prefix villacruz-portfolio ci",
-  "buildCommand": "npm --prefix villacruz-portfolio run build",
-  "outputDirectory": "villacruz-portfolio/dist"
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
